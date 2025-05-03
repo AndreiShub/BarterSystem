@@ -1,0 +1,10 @@
+<h2>Login</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Log in</button>
+</form>
+
+{% if form.errors %}
+  <p style="color:red;">Invalid credentials. Try again.</p>
+{% endif %}

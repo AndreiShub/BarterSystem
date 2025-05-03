@@ -1,0 +1,7 @@
+<h2>{{ action }} Ad</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{{ action }}</button>
+  </form>
+<a href="{% url 'ad_list' %}">Cancel</a>

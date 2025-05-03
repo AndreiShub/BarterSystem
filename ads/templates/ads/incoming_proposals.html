@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Incoming Proposals{% endblock %}
+
+{% block content %}
+<h1>Incoming Proposals</h1>
+{% for p in proposals %}
+  <div style="margin-bottom:1em; padding:1em; border:1px solid #ccc;">
+    <p><strong>{{ p.ad_sender.title }}</strong> → <strong>{{ p.ad_receiver.title }}</strong></p>
+    <p>Status: {{ p.status }}</p>
+    <p>Comment: {{ p.comment }}</p>
+
+    {% if p.status == 'pending' %}
+      <form action="{% url 'respond_proposal' p.id 'accepted' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Accept</button>
+      </form>
+      <form action="{% url 'respond_proposal' p.id 'rejected' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Reject</button>
+      </form>
+    {% endif %}
+  </div>
+{% empty %}
+  <p>No proposals yet.</p>
+{% endfor %}
+{% endblock %}

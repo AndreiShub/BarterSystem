@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}All Ads{% endblock %}
+
+{% block content %}
+  <form method="get">
+      <input type="text" name="q" placeholder="Search title..." value="{{ query }}">
+      
+      <select name="category">
+        <option value="">All Categories</option>
+        {% for key, label in categories %}
+          <option value="{{ key }}" {% if key == category %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    
+      <select name="condition">
+        <option value="">All Conditions</option>
+        {% for key, label in conditions %}
+          <option value="{{ key }}" {% if key == condition %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    
+      <button type="submit">Search</button>
+  </form>
+
+  <h1>All Ads</h1>
+  <a href="{% url 'ad_create' %}">Post New Ad</a>
+  <ul>
+    {% for ad in page_obj %}
+      <li style="margin-bottom: 20px;">
+        <strong>{{ ad.title }}</strong> ({{ ad.category }}, {{ ad.condition }})<br>
+        Posted by {{ ad.user.username }} on {{ ad.created_at|date:"Y-m-d" }}<br>
+        {% if ad.image %}
+          <img src="{{ ad.image.url }}" alt="{{ ad.title }}" width="200">
+        {% endif %}
+        {{ ad.description|truncatewords:30 }}<br>
+
+        {% if ad.user != request.user %}
+          <a href="{% url 'propose_exchange' ad.id %}">Propose Exchange</a>
+        {% endif %}
+        {% if ad.user == request.user %}
+          <a href="{% url 'ad_update' ad.pk %}">Edit</a> |
+          <a href="{% url 'ad_delete' ad.pk %}">Delete</a>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>No ads posted yet.</li>
+    {% endfor %}
+  </ul>
+
+  <div class="pagination">
+      <span>
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+      </span>
+    
+      {% if page_obj.has_previous %}
+        <a href="?{% if query %}q={{ query }}&{% endif %}{% if category %}category={{ category }}&{% endif %}{% if condition %}condition={{ condition }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+    
+      {% if page_obj.has_next %}
+        <a href="?{% if query %}q={{ query }}&{% endif %}{% if category %}category={{ category }}&{% endif %}{% if condition %}condition={{ condition }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+      {% endif %}
+  </div>
+
+  <div>
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+        <strong>{{ num }}</strong>
+      {% else %}
+        <a href="?{% if query %}q={{ query }}&{% endif %}{% if category %}category={{ category }}&{% endif %}{% if condition %}condition={{ condition }}&{% endif %}page={{ num }}">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}

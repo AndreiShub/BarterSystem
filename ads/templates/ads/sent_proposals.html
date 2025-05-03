@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Sent Proposals{% endblock %}
+
+{% block content %}
+<h1>Sent Proposals</h1>
+{% for p in proposals %}
+  <div style="margin-bottom:1em; padding:1em; border:1px solid #ccc;">
+    <p><strong>{{ p.ad_sender.title }}</strong> → <strong>{{ p.ad_receiver.title }}</strong></p>
+    <p>Status: {{ p.status }}</p>
+    <p>Comment: {{ p.comment }}</p>
+  </div>
+{% empty %}
+  <p>You haven’t sent any proposals yet.</p>
+{% endfor %}
+{% endblock %}
