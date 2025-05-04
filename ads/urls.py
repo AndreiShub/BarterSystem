@@ -6,6 +6,7 @@ urlpatterns = [
     path('create/', views.ad_create, name='ad_create'),
     path('<int:pk>/edit/', views.ad_update, name='ad_update'),
     path('<int:pk>/delete/', views.ad_delete, name='ad_delete'),
+    path('my-ads/', views.my_ads, name='my_ads'),
     path('ads/<int:ad_id>/propose/', views.propose_exchange, name='propose_exchange'),
     path('proposals/incoming/', views.incoming_proposals, name='incoming_proposals'),
     path('proposals/sent/', views.sent_proposals, name='sent_proposals'),

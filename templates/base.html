@@ -22,6 +22,7 @@
     <nav>
         <a href="{% url 'ad_list' %}"> Home</a>
         {% if user.is_authenticated %}
+            <a href="{% url 'my_ads' %}">My Ads</a>
             <a href="{% url 'incoming_proposals' %}"> Incoming</a>
             <a href="{% url 'sent_proposals' %}"> Sent</a>
             <span>Logged in as {{ user.username }}</span>

@@ -8,7 +8,7 @@ from django.core.paginator import Paginator
 
 def ad_list(request):
     ads = Ad.objects.all()
-    query = request.GET.get('q')
+    query = request.GET.get('q', '')
     category = request.GET.get('category')
     condition = request.GET.get('condition')
 
@@ -66,6 +66,11 @@ def ad_delete(request, pk):
         ad.delete()
         return redirect('ad_list')
     return render(request, 'ads/ad_confirm_delete.html', {'ad': ad})
+
+@login_required
+def my_ads(request):
+    ads = Ad.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'ads/my_ads.html', {'ads': ads})
 
 @login_required
 def propose_exchange(request, ad_id):
