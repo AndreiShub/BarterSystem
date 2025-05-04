@@ -7,13 +7,16 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 
 def ad_list(request):
-    ads = Ad.objects.all()
+    ads = Ad.objects.all().order_by('-created_at')
     query = request.GET.get('q', '')
     category = request.GET.get('category')
     condition = request.GET.get('condition')
 
     if query:
-        ads = ads.filter(title__icontains=query)
+        ads = ads.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query)
+        )
 
     if category:
         ads = ads.filter(category=category)
