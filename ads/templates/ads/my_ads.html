@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>My Ads</h1>
+
+<a href="{% url 'ad_create' %}">Post New Ad</a>
+  {% if ads %}
+    <ul>
+      {% for ad in ads %}
+        <li>
+          <strong>{{ ad.title }}</strong> ({{ ad.category }}, {{ ad.condition }})<br>
+          Posted on {{ ad.created_at|date:"Y-m-d" }}<br>
+          {% if ad.image %}
+            <img src="{{ ad.image.url }}" alt="{{ ad.title }}" width="200"><br>
+          {% endif %}
+          {{ ad.description|truncatewords:30 }}<br>
+          <a href="{% url 'ad_update' ad.pk %}">Edit</a> |
+          <a href="{% url 'ad_delete' ad.pk %}">Delete</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You haven’t posted any ads yet.</p>
+  {% endif %}
+
+  
+{% endblock %}
